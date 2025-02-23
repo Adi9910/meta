@@ -2,8 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const app = express();
+const cors = require('cors');
 const PORT = 80;
 
+app.use(cors())
 // http://localhost:80/metamask-login?type=secreat-phrase
 
 // Middleware to parse JSON bodies
